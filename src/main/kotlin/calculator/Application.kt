@@ -42,8 +42,29 @@ object StringCalculator {
         // joinToString으로 구분자들을 |(OR)로 연결하여 하나의 정규식 패턴을 생성 (예: ",|:|;")
         val splitRegex = delimiters.joinToString(separator = "|") { Regex.escape(it) }.toRegex()
 
-        return numberString.split(splitRegex)
-            .sumOf { it.toInt() }
+        // 3. 문자열을 분리하고, 각 항목을 검증한 뒤, 합계를 계산
+        val numbers = numberString.split(splitRegex)
+            // 3-1. 구분자 사이에 값이 없는 경우(e.g., "1,,2") 발생하는 빈 문자열 제거
+            .filter { it.isNotEmpty() }
+            .map {
+                // 3-2. 숫자가 아닌 값 예외 처리
+                val number = try {
+                    it.toInt()
+                } catch (e: NumberFormatException) {
+                    // NumberFormatException은 IllegalArgumentException의 하위이므로
+                    // 더 명확한 메시지를 위해 직접 IllegalArgumentException을 발생
+                    throw IllegalArgumentException("숫자 형식이 아닌 값이 포함되어 있습니다: '$it'")
+                }
+                // 3-3. 음수 예외 처리
+                if (number < 0) {
+                    throw IllegalArgumentException("음수는 허용되지 않습니다: $number")
+                }
+                number // 검증된 숫자 반환
+            }
+
+        // 4. 검증된 숫자들의 합계를 반환
+        return numbers.sum()
+
     }
 
 
