@@ -27,12 +27,17 @@ object StringCalculator {
     // 문자열을 입력받아 합계를 반환하는 함수
     // text: String? 에서 '?'는 이 변수가 null 값을 가질 수도 있다는 것을 의미. (코틀린의 Null 안정성)
     fun add(text: String?): Int {
-        // isNullOrBlank()는 문자열이 null이거나, 비어있거나, 공백 문자만으로 이루어져 있는지 확인
+        // 입력값이 null이거나 공백이면 0을 반환
         if (text.isNullOrBlank()) {
             return 0
         }
 
-        // 아직 다른 계산 로직은 없으므로, 우선 임시로 0을 반환.
-        return 0
+        // split() 함수로 문자열을 쉼표(,) 또는 콜론(:) 기준으로 분리하여 리스트로 만듦
+        // 정규식을 사용하여 여러 구분자를 한 번에 처리
+        val numbers = text.split("[,:]".toRegex())
+
+        // sumOf()를 사용하여 각 문자열을 정수(Int)로 변환하고 그 합계를 계산
+        // 'it'은 리스트의 각 항목(여기서는 "1", "2", "3" 등)을 의미
+        return numbers.sumOf { it.toInt() }
     }
 }
