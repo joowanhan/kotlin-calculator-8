@@ -21,4 +21,14 @@ class Calculator(val line: String) {
 			.map { it.trim().toInt() }  // 공백 제거 후 정수로 변환
 	}
 	
+	fun calculate(): Int {
+		var sum = 0
+		parseCustomDelimiters()
+		parseNumbers()
+		require(numbers.all { it >= 0 })
+		numbers.map { sum += it }
+		return sum
+		
+	}
+	
 }
