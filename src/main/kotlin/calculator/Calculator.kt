@@ -26,7 +26,8 @@ class Calculator(val line: String) {
 	}
 	
 	fun parseNumbers(): List<Int> {
-		return numbersString.split(*delimiters.toCharArray()).filter { it.isNotBlank() } // (권장) 연속된 구분자로 인한 빈 문자열 제거
+		return numbersString.split(*delimiters.toCharArray()) // ㅇㅇㄴ
+			.filter { it.isNotBlank() } // (권장) 연속된 구분자로 인한 빈 문자열 제거
 			.map { it.trim().toInt() }  // 공백 제거 후 정수로 변환
 	}
 	
