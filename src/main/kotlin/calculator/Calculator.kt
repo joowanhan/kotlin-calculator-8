@@ -26,15 +26,17 @@ class Calculator(val line: String) {
 	}
 	
 	fun parseNumbers(): List<Int> {
-		return numbersString.split(*delimiters.toCharArray()) // ㅇㅇㄴ
-			.filter { it.isNotBlank() } // (권장) 연속된 구분자로 인한 빈 문자열 제거
-			.map { it.trim().toInt() }  // 공백 제거 후 정수로 변환
+		return numbersString.split(*delimiters.toCharArray()) // 스프레드를 위해 Array로 변환, vararg 인자에 투입
+			.filter { it.isNotBlank() } // 연속된 구분자로 생길 수 있는 빈 문자열 걸러내기 (권장)
+			.map {
+				it.trim().toIntOrNull() ?: throw IllegalArgumentException("Invalid number format: $it")
+			}  // trim: 문자열 맨 앞뒤의 공백 제거
 	}
 	
 	fun calculate(): Int {
 		parseCustomDelimiters()
 		val numbers = parseNumbers()
-		require(numbers.all { it >= 0 }) { "negative integers can't be calculated" }
+		require(numbers.all { it >= 0 }) { "Negative integers can't be calculated" }
 		return numbers.sum()
 		
 	}

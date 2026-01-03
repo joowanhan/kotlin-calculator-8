@@ -56,9 +56,9 @@ class CalculatorTest {
 		val calculator = Calculator(input)
 		
 		// when & then
-		// toInt() 변환 과정에서 숫자가 아닌 경우 예외 발생 (코드의 map { it.trim().toInt() } 부분)
+		// toIntOrNull() 변환 과정에서 숫자가 아닌 경우 예외 발생
 		assertThatThrownBy { calculator.calculate() }.isInstanceOf(IllegalArgumentException::class.java)
-		// 현재는 NumberFormatException이 발생됨 - 하지만 조상이 IllegalArgumentException이라서 테스트가 통과됨 - 리팩토링하기
+			.hasMessageContaining("Invalid number format")
 	}
 	
 	@Test
